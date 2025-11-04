@@ -1,17 +1,29 @@
 // src/components/Header/Header.tsx
-
+"use client"; 
 import Link from 'next/link';
 // Importaciones de los iconos de lucide-react
 import { Home, Calendar, Stethoscope, Users, Clock, Star, Bell, User, Settings } from 'lucide-react'; 
+import { usePathname } from 'next/navigation';
 
 // Componente para los elementos de navegación (Inicio, Agenda, etc.)
-const NavItem = ({ href, icon: Icon, label }: { href: string, icon: React.ElementType, label: string }) => (
-  // La clase 'text-blue-600' en hover simula el borde inferior azul de tu mockup
-  <Link href={href} className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600 transition duration-150 ease-in-out">
-    <Icon size={18} /> {/* Usa el componente de ícono con un tamaño */}
-    <span>{label}</span>
-  </Link>
-);
+const NavItem = ({ href, icon: Icon, label }: { href: string, icon: React.ElementType, label: string }) => {
+  const pathname = usePathname();  // La clase 'text-blue-600' en hover simula el borde inferior azul de tu mockup
+
+  const isActive = (href === '/' && pathname === '/') || (href !== '/' && pathname.startsWith(href));
+  const linkClasses = `
+    flex items-center space-x-2 px-3 py-2 text-sm font-medium transition duration-150 ease-in-out 
+    ${isActive 
+      ? 'text-blue-700 border-b-2 border-blue-700' // Estado ACTIVO: Texto azul y línea azul permanente
+      : 'text-gray-600 border-b-2 border-transparent hover:text-blue-600 hover:border-blue-600' // Estado INACTIVO: Gris con hover
+    }
+  `;
+  return (
+  <Link href={href} className={linkClasses}>
+      <Icon size={18} /> 
+      <span>{label}</span>
+    </Link>
+  );
+};
 
 export default function Header() {
   return (
@@ -25,7 +37,7 @@ export default function Header() {
         
         {/* Navegación Principal */}
         <div className="hidden sm:flex space-x-1"> {/* Reducido el espacio entre items */}
-          <NavItem href="/dashboard" label="Inicio" icon={Home} />
+          <NavItem href="/" label="Inicio" icon={Home} />
           <NavItem href="/agenda" label="Agenda" icon={Calendar} />
           <NavItem href="/consultorios" label="Consultorios" icon={Stethoscope} /> {/* Ícono de consultorio */}
           <NavItem href="/pacientes" label="Pacientes" icon={Users} />
