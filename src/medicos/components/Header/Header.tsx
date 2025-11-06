@@ -53,9 +53,11 @@ export default function Header() {
           <Bell size={20} />
         </button>
         {/* Ícono de usuario */}
+        <Link href="/perfil" passHref>
         <button className="text-gray-500 hover:text-blue-600 p-2 rounded-full hover:bg-gray-100 transition-colors duration-150">
           <User size={20} />
         </button>
+        </Link>
         {/* Ícono de configuración */}
         <button className="text-gray-500 hover:text-blue-600 p-2 rounded-full hover:bg-gray-100 transition-colors duration-150">
           <Settings size={20} />
